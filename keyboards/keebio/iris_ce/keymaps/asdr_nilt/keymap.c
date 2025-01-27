@@ -3,6 +3,7 @@
 #    include "keymap.h"
 #endif
 
+#include "keymap_us_international_linux.h"
 
 /* THIS FILE WAS GENERATED!
  *
@@ -12,17 +13,17 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
-            LT(2,KC_ESC), KC_1, KC_2, KC_3, KC_4, KC_5,                    KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
-            KC_TAB, KC_Q, KC_W, KC_B, KC_F, RALT(KC_QUOT),                  KC_Z, KC_K, KC_U, KC_O, KC_P, KC_EQL,
-            KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G, KC_H,                    KC_N, KC_I, KC_L, KC_T, KC_RSFT,
+            LT(2,KC_ESC), KC_1, KC_2, KC_3, KC_4, KC_5,                     KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
+            KC_TAB, KC_Q, KC_W, KC_B, KC_F, US_QUOT,                        KC_Z, KC_K, KC_U, KC_O, KC_P, KC_EQL,
+            KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G,                          KC_H, KC_N, KC_I, KC_L, KC_T, KC_RSFT,
             KC_LCTL, LT(1,KC_Y), KC_X, KC_C, KC_V, KC_SLSH, KC_LGUI,  MO(2), KC_J, KC_M, KC_COMM, KC_DOT, LT(1,KC_MINS), KC_NO,
                                             KC_LALT, KC_DEL, KC_SPC,  KC_ENT, KC_E, KC_RCTL
         ),
     [1] = LAYOUT(
-            KC_NO, KC_GRV, KC_QUOT, KC_NO, RALT(KC_5), KC_NO,              KC_NO, KC_PIPE, KC_LBRC, KC_RBRC, KC_BSLS, KC_NO,
-            KC_NO, KC_NO, LCTL(KC_LEFT), KC_UP, LCTL(KC_RGHT), KC_NO,       KC_NO, KC_NO, KC_LCBR, KC_RCBR, KC_TILD, KC_NO,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,            KC_NO, KC_NO, KC_LPRN, KC_RPRN, KC_NO, KC_RSFT,
-            KC_NO, KC_TRNS, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO, KC_NO, KC_NO, KC_NO, KC_SCLN, KC_COLN, KC_NO, KC_NO,
+            KC_NO, KC_GRV, US_ACUT, KC_NO, US_EURO, KC_NO,                  KC_NO, KC_PIPE, KC_LBRC, KC_RBRC, US_SS, KC_NO,
+            KC_NO, KC_NO, LCTL(KC_LEFT), KC_UP, LCTL(KC_RGHT), KC_NO,       KC_NO, KC_BSLS, KC_LCBR, KC_RCBR, KC_TILD, US_UDIA,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,            KC_NO, KC_NO, KC_LPRN, KC_RPRN, US_ODIA, KC_RSFT,
+            KC_NO, KC_TRNS, KC_NO, KC_NO, KC_PGUP, KC_PGDN, KC_NO, KC_NO, KC_NO, KC_NO, KC_SCLN, KC_COLN, KC_NO, US_ADIA,
                                             KC_NO, KC_BSPC, KC_ENT, KC_NO, KC_NO, KC_NO
         ),
     [2] = LAYOUT(
