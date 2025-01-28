@@ -20,8 +20,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             KC_LALT, KC_DEL, KC_SPC,  KC_ENT, KC_E, KC_RCTL
         ),
     [1] = LAYOUT(
-            KC_NO, KC_GRV, US_ACUT, US_SECT, US_EURO, US_CENT,              KC_NO, KC_PIPE, KC_LBRC, KC_RBRC, US_SS, KC_NO,
-            KC_NO, KC_NO, LCTL(KC_LEFT), KC_UP, LCTL(KC_RGHT), KC_NO,       KC_NO, KC_BSLS, KC_LCBR, KC_RCBR, KC_TILD, US_UDIA,
+            KC_NO, US_GRV, US_ACUT, US_SECT, US_EURO, US_CENT,              KC_NO, KC_PIPE, KC_LBRC, KC_RBRC, US_SS, KC_NO,
+            KC_NO, KC_NO, LCTL(KC_LEFT), KC_UP, LCTL(KC_RGHT), KC_NO,       KC_NO, KC_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_UDIA,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,            KC_NO, US_MUL, KC_LPRN, KC_RPRN, US_ODIA, KC_RSFT,
             KC_NO, KC_TRNS, KC_NO, KC_PGUP, KC_PGDN, KC_NO, KC_NO,   KC_NO, KC_NO, US_MICR, KC_SCLN, KC_COLN, KC_NO, US_ADIA,
                                             KC_NO, KC_BSPC, KC_ENT,  KC_NO, KC_NO, KC_NO
