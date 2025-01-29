@@ -8,7 +8,7 @@
 // CC for custom code
 enum my_keycodes {
   CC_NINE_PLUS = SAFE_RANGE,
-  CC_ZERO_TILDE,             // this one isn't used by me, but reserved for use in US/UK and other layouts.
+  CC_ZERO_TILDE,             // this one isn't used by me, but made available for use in US/UK and other layouts.
   CC_ZERO_QUESTION,
   CC_SLASH_BSLSH,
 };
@@ -16,16 +16,13 @@ enum my_keycodes {
 #define CC_9     CC_NINE_PLUS
 #define CC_0     CC_ZERO_QUESTION
 #define CC_SLSH  CC_SLASH_BSLSH
-// As long as this isn't working, we can make a tilde via AltGr (L1) plus Shift plus 1.
-// (Because that yields Shift+Grave, which is Tilde.)
-
+// Unless we use the modified base layout, \ and | will be swapped, but still accessible...
 
 // KC for aliases
 // n-dash is not in standard software keymap, but since I have a special one, I can use it:
 // https://github.com/matey-jack/us-de-extended-layout
 // this (firmware) keymap is still usable with standard software keymap; then n-dash will simply be missing.
 #define KC_DASH  ALGR(US_MINS)
-// TODO: also use this custom Windows layout to bring 'live' back-tick (US_GRV) that exists in standard map on Linux.
 
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
@@ -73,7 +70,7 @@ void add_or_del_key(uint16_t keycode, keyrecord_t *record) {
 
 /*
  * Handle changes in shift layer for unused positions of () on 9 and 0 keys
- * and ~ on / key, for cases when ? moved to 0 (for symmetry with ! and compatibility with German layouts).
+ * and \ on / key, for cases when ? moved to 0 (for symmetry with ! and compatibility with German layouts).
  * Used target keycodes are from keymap_us.h
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
