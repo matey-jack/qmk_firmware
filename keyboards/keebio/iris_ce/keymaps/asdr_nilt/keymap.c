@@ -22,7 +22,7 @@ enum my_keycodes {
 // n-dash is not in standard software keymap, but since I have a special one, I can use it:
 // https://github.com/matey-jack/us-de-extended-layout
 // this (firmware) keymap is still usable with standard software keymap; then n-dash will simply be missing.
-#define KC_DASH  ALGR(US_MINS)
+#define KC_DASH  S(ALGR(US_MINS))
 
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
