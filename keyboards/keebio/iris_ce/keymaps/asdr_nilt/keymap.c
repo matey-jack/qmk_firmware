@@ -10,12 +10,12 @@ enum my_keycodes {
   CC_NINE_PLUS = SAFE_RANGE,
   CC_ZERO_TILDE,             // this one isn't used by me, but reserved for use in US/UK and other layouts.
   CC_ZERO_QUESTION,
-  CC_SLASH_TILDE,
+  CC_SLASH_BSLSH,
 };
 
 #define CC_9     CC_NINE_PLUS
 #define CC_0     CC_ZERO_QUESTION
-#define CC_SLSH  CC_SLASH_TILDE
+#define CC_SLSH  CC_SLASH_BSLSH
 // As long as this isn't working, we can make a tilde via AltGr (L1) plus Shift plus 1.
 // (Because that yields Shift+Grave, which is Tilde.)
 
@@ -88,8 +88,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CC_ZERO_TILDE:
             add_or_del_key(shifted ? US_TILD : KC_0, record);
             return false;
-        case CC_SLASH_TILDE:
-            add_or_del_key(shifted ? US_TILD : KC_SLASH, record);
+        case CC_SLASH_BSLSH:
+            add_or_del_key(shifted ? KC_BACKSLASH : KC_SLASH, record);
             return false;
         default:
             return true;
