@@ -42,8 +42,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Dead tilde for accents can be obtained with Shift+US_GRV as on any other keyboard.
     // I just mention it, because this and äöü are the only characters that need pressing both Shift and AltGr.
     [1] = LAYOUT(
-            KC_NO  , US_DGRV, US_ACUT, US_SECT, US_EURO, US_CENT,                       KC_NO  , KX_PIPE, KC_LBRC, KC_RBRC, US_IQUE, US_SS  ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       KC_NO  , KX_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_UDIA,
+            KC_NO  , US_DGRV, US_ACUT, US_SECT, US_EURO, US_CENT,                       US_DCIR, KX_PIPE, KC_LBRC, KC_RBRC, US_IQUE, US_SS  ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_DEG , KX_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_UDIA,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       KC_NO  , US_MUL , KC_LPRN, KC_RPRN, US_ODIA, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, US_MICR, KC_EQL , KC_SCLN, KC_COLN, KX_DASH, US_ADIA,
                                                 KC_NO  , KC_BSPC, KC_ENT ,     KC_NO  , KC_NO  , KC_RCTL
