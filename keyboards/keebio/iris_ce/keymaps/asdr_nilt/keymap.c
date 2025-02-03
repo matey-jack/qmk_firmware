@@ -4,6 +4,8 @@
 #endif
 
 #include "keymap_us_international_linux.h"
+#include "us-ext-intl-mod.h"
+
 
 // CC for custom code
 enum my_keycodes {
@@ -17,12 +19,6 @@ enum my_keycodes {
 #define CC_0     CC_ZERO_QUESTION
 #define CC_SLSH  CC_SLASH_BSLSH
 // Unless we use the modified base layout, \ and | will be swapped, but still accessible...
-
-// KC for aliases
-// n-dash is not in standard software keymap, but since I have a special one, I can use it:
-// https://github.com/matey-jack/us-de-extended-layout
-// this (firmware) keymap is still usable with standard software keymap; then n-dash will simply be missing.
-#define KC_DASH  S(ALGR(US_MINS))
 
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
@@ -43,10 +39,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ),
     // alternate character and navigation layer
     [1] = LAYOUT(
-            KC_NO  , US_GRV , US_ACUT, US_SECT, US_EURO, US_CENT,                       KC_NO  , KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_NO  ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       KC_NO  , KC_BSLS, KC_LCBR, KC_RCBR, US_SS  , US_UDIA,
+            KC_NO  , US_GRV , US_ACUT, US_SECT, US_EURO, US_CENT,                       KC_NO  , KX_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_NO  ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       KC_NO  , KX_BSLS, KC_LCBR, KC_RCBR, US_SS  , US_UDIA,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       KC_NO  , US_MUL , KC_LPRN, KC_RPRN, US_ODIA, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, US_MICR, KC_EQL , KC_SCLN, KC_COLN, KC_DASH, US_ADIA,
+			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, US_MICR, KC_EQL , KC_SCLN, KC_COLN, KX_DASH, US_ADIA,
                                                 KC_NO  , KC_BSPC, KC_ENT ,     KC_NO  , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
