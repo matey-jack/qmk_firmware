@@ -32,11 +32,11 @@ enum my_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [0] = LAYOUT(
-            L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6, KC_7, KC_8, CC_9, CC_0, KC_BSPC,
-            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_QUOT,                     KC_Z, KC_K, KC_U, KC_O, KC_P, KC_PGUP,
-            KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H, KC_N, KC_I, KC_L, KC_T, KC_RSFT,
-            KC_LCTL, L1_Y, KC_X, KC_C, KC_V, CC_SLSH, KC_LGUI,   L2_INS , KC_J, KC_M, KC_COMM, KC_DOT, L1_MINS, KC_PGDN,
-                                             KC_LALT, KC_DEL ,   KC_SPC , L1_ENT, KC_E, KC_RCTL
+            L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6, KC_7, KC_8   , CC_9  , CC_0   , KC_BSPC,
+            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_QUOT,                     KC_Z, KC_K, KC_U   , KC_O  , KC_P   , KC_PGUP,
+            KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H, KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
+            KC_LCTL, L1_Y, KC_X, KC_C, KC_V, CC_SLSH, KC_LGUI,    L2_INS, KC_J, KC_M, KC_COMM, KC_DOT, L1_MINS, KC_PGDN,
+                                    KC_LALT, KC_DEL , KC_SPC ,    L1_ENT, KC_E, KC_RCTL
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
