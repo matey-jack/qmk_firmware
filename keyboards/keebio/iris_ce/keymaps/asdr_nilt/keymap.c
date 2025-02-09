@@ -6,47 +6,34 @@
 #include "keymap_us_international_linux.h"
 #include "us-ext-intl-mod.h"
 
-
-// CC for custom code
-enum my_keycodes {
-  CC_NINE_PLUS = SAFE_RANGE,
-  CC_ZERO_TILDE,             // this one isn't used by me, but made available for use in US/UK and other layouts.
-  CC_ZERO_QUESTION,
-  CC_SLASH_BSLSH,
-};
-
-#define CC_9     CC_NINE_PLUS
-#define CC_0     CC_ZERO_QUESTION
-#define CC_SLSH  CC_SLASH_BSLSH
-// Unless we use the modified base layout, \ and | will be swapped, but still accessible...
-
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
 
 #define L1_Y     LT(1, KC_Y)
 #define L1_MINS  LT(1, KC_MINS)
+#define L1_ENT   LT(1, KC_ENT)
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [0] = LAYOUT(
-            L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6, KC_7, KC_8, CC_9, CC_0, KC_BSPC,
+            L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_QUOT,                     KC_Z, KC_K, KC_U, KC_O, KC_P, KC_PGUP,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H, KC_N, KC_I, KC_L, KC_T, KC_RSFT,
-            KC_LCTL, L1_Y, KC_X, KC_C, KC_V, CC_SLSH, KC_LGUI,   L2_INS , KC_J, KC_M, KC_COMM, KC_DOT, L1_MINS, KC_PGDN,
-                                             KC_LALT, KC_DEL ,   KC_SPC , KC_ENT, KC_E, KC_RCTL
+            KC_LCTL, L1_Y, KC_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J, KC_M, KC_COMM, KC_DOT, L1_MINS, KC_PGDN,
+                                     KC_LALT, KC_DEL, KC_SPC ,   L1_ENT, KC_E, KC_RCTL
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
     // Dead tilde for accents can be obtained with Shift+US_GRV as on any other keyboard.
-    // I just mention it, because this and äöü are the only characters that need pressing both Shift and AltGr.
+    // I just mention it, because this and capital ÄÖÜ are the only characters that need pressing both Shift and AltGr.
     [1] = LAYOUT(
             KC_NO  , US_DGRV, US_ACUT, US_SECT, US_EURO, US_CENT,                       US_DCIR, KX_PIPE, KC_LBRC, KC_RBRC, US_IQUE, US_SS  ,
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_DEG , KX_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_UDIA,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       KC_NO  , US_MUL , KC_LPRN, KC_RPRN, US_ODIA, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, US_MICR, KC_EQL , KC_SCLN, KC_COLN, KX_DASH, US_ADIA,
-                                                KC_NO  , KC_BSPC, KC_ENT ,     KC_NO  , KC_NO  , KC_RCTL
+                                                KC_NO  , KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
     [2] = LAYOUT(
@@ -57,40 +44,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 KC_NO  , KC_NO  , KC_NO  ,     KC_NO  , KC_NO  , KC_RCTL
         )
 };
-
-void add_or_del_key(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        add_key(keycode);
-    } else {
-        del_key(keycode);
-    }
-    send_keyboard_report();
-}
-
-/*
- * Handle changes in shift layer for unused positions of () on 9 and 0 keys
- * and \ on / key, for cases when ? moved to 0 (for symmetry with ! and compatibility with German layouts).
- * Used target keycodes are from keymap_us.h
- */
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    uint16_t shifted = (get_mods() & MOD_MASK_SHIFT);
-    switch (keycode) {
-        case CC_NINE_PLUS:
-            add_or_del_key(shifted ? KC_PLUS : KC_9, record);
-            return false;
-        case CC_ZERO_QUESTION:
-            add_or_del_key(shifted ? KC_QUESTION : KC_0, record);
-            return false;
-        case CC_ZERO_TILDE:
-            add_or_del_key(shifted ? US_TILD : KC_0, record);
-            return false;
-        case CC_SLASH_BSLSH:
-            add_or_del_key(shifted ? KC_BACKSLASH : KC_SLASH, record);
-            return false;
-        default:
-            return true;
-    }
-}
 
 #ifdef OTHER_KEYMAP_C
 #    include OTHER_KEYMAP_C
