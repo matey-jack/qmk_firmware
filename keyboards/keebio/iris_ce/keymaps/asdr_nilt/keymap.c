@@ -7,19 +7,6 @@
 #include "us-ext-intl-mod.h"
 
 
-// CC for custom code
-enum my_keycodes {
-  CC_NINE_PLUS = SAFE_RANGE,
-  CC_ZERO_TILDE,             // this one isn't used by me, but made available for use in US/UK and other layouts.
-  CC_ZERO_QUESTION,
-  CC_SLASH_BSLSH,
-};
-
-#define CC_9     CC_NINE_PLUS
-#define CC_0     CC_ZERO_QUESTION
-#define CC_SLSH  CC_SLASH_BSLSH
-// Unless we use the modified base layout, \ and | will be swapped, but still accessible...
-
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
 
@@ -27,6 +14,14 @@ enum my_keycodes {
 #define L1_MINS  LT(1, KC_MINS)
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
+
+// CC for custom code: those are translating from the Ergodox layout (which has the additional ß key).
+// To make it work, ß actually needs to be mapped to a base key -- yet another case of making the present task more complicated because of an anticipated need :worry:
+enum my_keycodes {
+  CC_6 = SAFE_RANGE,
+  CC_9,
+  CC_0,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
@@ -67,25 +62,19 @@ void add_or_del_key(uint16_t keycode, keyrecord_t *record) {
     send_keyboard_report();
 }
 
-/*
- * Handle changes in shift layer for unused positions of () on 9 and 0 keys
- * and \ on / key, for cases when ? moved to 0 (for symmetry with ! and compatibility with German layouts).
- * Used target keycodes are from keymap_us.h
- */
+// This assumes that +=? are on Shift+90ß in the software layout,
+// and moves them to Shift+690.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uint16_t shifted = (get_mods() & MOD_MASK_SHIFT);
     switch (keycode) {
-        case CC_NINE_PLUS:
-            add_or_del_key(shifted ? KC_PLUS : KC_9, record);
+        case CC_6:
+            add_or_del_key(shifted ? KC_9  : KC_6, record);
             return false;
-        case CC_ZERO_QUESTION:
-            add_or_del_key(shifted ? KC_QUESTION : KC_0, record);
+        case CC_9:
+            add_or_del_key(shifted ? KC_0  : KC_9, record);
             return false;
-        case CC_ZERO_TILDE:
-            add_or_del_key(shifted ? US_TILD : KC_0, record);
-            return false;
-        case CC_SLASH_BSLSH:
-            add_or_del_key(shifted ? KC_BACKSLASH : KC_SLASH, record);
+        case CC_0:
+            add_or_del_key(shifted ? KX_SS : KC_0, record);
             return false;
         default:
             return true;

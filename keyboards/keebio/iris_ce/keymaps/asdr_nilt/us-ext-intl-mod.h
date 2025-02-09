@@ -5,5 +5,5 @@
 
 #define KX_DASH  S(ALGR(US_MINS))
 
-#define KX_PIPE KC_BSLS
-#define KX_BSLS KC_PIPE
+#define KX_SS   TODO // need to find a free key to assign this to in the software layout
+#define KX_QUES S(KX_SS)
