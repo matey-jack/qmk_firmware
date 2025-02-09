@@ -25,6 +25,7 @@ enum my_keycodes {
 
 #define L1_Y     LT(1, KC_Y)
 #define L1_MINS  LT(1, KC_MINS)
+#define L1_ENT   LT(1, KC_ENT)
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
@@ -35,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_QUOT,                     KC_Z, KC_K, KC_U, KC_O, KC_P, KC_PGUP,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H, KC_N, KC_I, KC_L, KC_T, KC_RSFT,
             KC_LCTL, L1_Y, KC_X, KC_C, KC_V, CC_SLSH, KC_LGUI,   L2_INS , KC_J, KC_M, KC_COMM, KC_DOT, L1_MINS, KC_PGDN,
-                                             KC_LALT, KC_DEL ,   KC_SPC , KC_ENT, KC_E, KC_RCTL
+                                             KC_LALT, KC_DEL ,   KC_SPC , L1_ENT, KC_E, KC_RCTL
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
