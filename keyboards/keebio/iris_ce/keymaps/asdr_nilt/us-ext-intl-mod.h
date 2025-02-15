@@ -16,3 +16,8 @@
 // so I use those constants, not defining new ones.
 #define KX_DGRV ALGR(KC_GRV)
 #define KX_ACUT ALGR(KC_QUOT)
+
+// ^() moved to AltGr layer to make space for +=?
+#define KX_CIRC ALGR(KC_6)
+#define KX_LPRN ALGR(KC_9)
+#define KX_RPRN ALGR(KC_0)
