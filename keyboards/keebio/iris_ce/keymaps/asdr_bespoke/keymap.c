@@ -46,18 +46,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_GRV ,                       US_DEG , KC_BSLS, KC_LCBR, KC_RCBR, KC_TILD, US_UDIA,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       KC_NO  , US_MUL , KX_LPRN, KX_RPRN, US_ODIA, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_NO  , US_MICR, KC_EQL , KX_LT  , KX_GT  , KX_DASH, US_ADIA,
-                                                KC_NO  , KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
+                                                KC_LALT  , KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
-    // function layer, like on a laptop. Includes a 'live' AltGr key, so we can access all characters from software layout AltGr that don't have
+    // function layer, like on a laptop.
+    // TODO: Add a one-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
     // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
     [2] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
             KC_NO  , KC_F11 , KC_F12 , KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
             KC_LSFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, KC_NO  ,
 			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_NO  , KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
-                                                KC_ALGR, KC_NO  , KC_NO  ,     KC_NO  , KC_NO  , KC_RCTL
-        )
-,
+                                                KC_LALT, KC_NO  , KC_NO  ,     KC_NO  , KC_NO  , KC_RCTL
+        ),
     // microlayer just for German umlauts. experimental!
     [3] = LAYOUT(
             KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO,
