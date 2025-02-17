@@ -3,7 +3,7 @@
 #    include "keymap.h"
 #endif
 
-#include "keymap_us_international_linux.h"
+#include "../../../../../quantum/keymap_extras/keymap_us_international_linux.h"
 #include "us-ext-intl-mod.h"
 
 // prev/next word shortcuts, works in almost all applications.
@@ -20,6 +20,13 @@
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 #define L3_V     LT(3, KC_V)
+
+// Macros!
+enum custom_keycodes {
+    MX_FUER = SAFE_RANGE,
+    MX_TION,
+    MX_UNG
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
@@ -53,12 +60,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,
     // microlayer just for German umlauts. experimental!
     [3] = LAYOUT(
-            KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     KC_NO  , KC_NO, KC_NO  , KC_NO  , KC_NO  , KC_NO,
-            KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     US_SS  , KC_NO, US_UDIA, US_ODIA, KC_NO  , KC_NO,
-            KC_LSFT, KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     KC_NO  , KC_NO, KC_NO  , KC_NO  , US_ADIA, KC_NO,
-			KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  , KC_NO,     KC_NO  , KC_NO  , KC_NO, KC_NO  , KC_NO  , KC_NO  , KC_NO,
+            KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO,
+            KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     US_SS  , US_ADIA, US_UDIA, US_ODIA, KC_NO  , KC_NO,
+            KC_LSFT, KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  ,                     KC_NO  , MX_UNG , MX_FUER, KC_NO  , MX_TION, KC_NO,
+			KC_NO  , KC_NO , KC_NO , KC_NO  , KC_NO  , KC_NO  , KC_NO,     KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO,
                                               KC_NO  , KC_NO  , KC_NO,     KC_NO  , KC_NO  , KC_NO
         )
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MX_FUER:
+        if (record->event.pressed) {
+            // when keycode QMKBEST is pressed
+            SEND_STRING("f" S_UDIA "r");
+        } else {
+            // when keycode QMKBEST is released
+        }
+        break;
+        case MX_TION:
+        if (record->event.pressed) {
+            SEND_STRING("tion");
+        } else {
+        }
+        break;
+        case MX_UNG:
+        if (record->event.pressed) {
+            SEND_STRING("ung");
+        } else {
+        }
+        break;
+    }
+    return true;
 };
 
 #ifdef OTHER_KEYMAP_C

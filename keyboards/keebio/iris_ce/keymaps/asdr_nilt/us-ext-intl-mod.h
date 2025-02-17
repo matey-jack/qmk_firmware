@@ -21,3 +21,9 @@
 #define KX_CIRC ALGR(KC_6)
 #define KX_LPRN ALGR(KC_9)
 #define KX_RPRN ALGR(KC_0)
+
+// for use with SEND_STRING we need a different kind of key code
+#define S_UDIA  SS_ALGR("y")    // Ü
+#define S_ODIA  SS_ALGR("p")    // Ö
+#define S_ADIA  SS_ALGR("q")    // Ä
+#define S_SS    SS_ALGR("s")    // ß
