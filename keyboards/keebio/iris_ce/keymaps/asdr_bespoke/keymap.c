@@ -36,8 +36,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [1] = LAYOUT(
             KC_NO  , KX_DGRV, KX_ACUT, US_SECT, US_EURO, US_CENT,                       KX_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_DEL,
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_GRV ,                       US_DEG , KC_LCBR, KX_LPRN, KX_RPRN, KC_RCBR, KC_TILD,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_MUL , US_SS  , US_UDIA, US_ODIA, US_ADIA, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_BSLS, KC_LGUI,     KC_NO  , US_MICR, KC_EQL , KX_LT  , KX_GT  , KX_DASH, KC_NO,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_MICR, US_SS  , US_UDIA, US_ODIA, US_ADIA, KC_RSFT,
+			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_BSLS, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KX_LT  , KX_GT  , KX_DASH, KC_NO,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
