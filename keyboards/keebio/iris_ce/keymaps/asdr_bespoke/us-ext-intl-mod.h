@@ -1,7 +1,9 @@
 // my special software keymap: // https://github.com/matey-jack/us-de-extended-layout
 
-// Most keys are like US ext intl, so I use their keycodes directly.
-// The layout is also designed to work with US ext int'l in a sort of fallback mode.
+// Most keys are like US ext intl, so I use their keycodes from the QMK header file.
+// My software keymap only has a few changes in the shift layer, and, importantly,
+// it places ' and " in the same position as US ANSI.
+// That makes the firmware layout also work with devices that only have US ANSI.
 
 #define KX_DASH  S(ALGR(US_MINS))
 

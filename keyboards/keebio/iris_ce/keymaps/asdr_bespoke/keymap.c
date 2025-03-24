@@ -7,6 +7,7 @@
 #include "us-ext-intl-mod.h"
 
 // prev/next word shortcuts, works in almost all applications.
+// previous and next word cursor navigation
 // (This helps avoid pressing Ctrl modifier in addition to the layer toggle.)
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
@@ -19,6 +20,16 @@
 #define L1_ENT   LT(1, KC_ENT)
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
+
+// One-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
+// a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
+#define OS_ALGR  OSM(MOD_RALT)
+
+// Macros!
+enum custom_keycodes {
+    MX_VERS = SAFE_RANGE,
+    MX_DASH
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
@@ -41,15 +52,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
-    // TODO: Add a one-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
-    // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
     [2] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
-            KC_NO  , KC_F11 , KC_F12 , KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
+            MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
             KC_LSFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, KC_NO  ,
-			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_NO  , KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
-                                                KC_LALT, KC_NO  , KC_NO  ,     KC_NO  , KC_NO  , KC_RCTL
+			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
+                                                KC_LALT, KC_NO  , KC_NO  ,     OS_ALGR, KC_NO  , KC_RCTL
         ),
+};
+
+// TODO:
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+      case MX_VERS:
+        if (record->event.pressed) {
+            SEND_STRING("Layout ASDR_NILT standalone, rev01, ");
+            SEND_STRING(__DATE__);
+        } else {
+            // when keycode is released
+        }
+        break;
+    }
+    return true;
 };
 
 #ifdef OTHER_KEYMAP_C
