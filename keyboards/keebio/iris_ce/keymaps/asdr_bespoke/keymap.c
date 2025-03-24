@@ -61,13 +61,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ),
 };
 
-// TODO:
+// 3 ms still had some dropped letters.
+const int SEND_STRING_DELAY_MS = 5;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
       case MX_VERS:
         if (record->event.pressed) {
-            SEND_STRING("Layout ASDR_NILT standalone, rev01, ");
-            SEND_STRING(__DATE__);
+            send_string_with_delay("Layout ASDR_NILT bespoke, rev05, ", SEND_STRING_DELAY_MS);
+            send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
         } else {
             // when keycode is released
         }
