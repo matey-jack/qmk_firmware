@@ -37,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, KC_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
-            KC_LCTL, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, US_ADIA, KC_M, KC_COMM, L1_DOT, L1_MINS, US_ODIA,
+            KC_LCTL, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, US_ADIA, KC_M, KC_COMM, KC_DOT, L1_MINS, US_ODIA,
                                      KC_LALT, KC_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
         ),
     // alternate character and navigation layer
