@@ -51,22 +51,25 @@ enum layer_names {
 // Macros!
 enum custom_keycodes {
     MX_VERS = SAFE_RANGE,
-    MX_DASH,
+    MX_DASH,  // TODO: this is for n-dash, but not sure how to make that work on Android.
+    // Next three are for characters that need different key taps on Google Pixel and other devices.
+    // Toggled by MX_TGM.
     MX_QUOT,
+    MX_ACUT,
     MX_DQUO,
+    // KC_GRV aka US_DGRV works same on both devices, it produces a dead grave.
     MX_TGM ,  // toggle quote mode
 };
 
 enum quote_mode {
-    // this works for the standard US keyboard on all platforms,
+    // this works for the standard US ANSI keyboard on all platforms,
     // but on Google Pixel 4a it even works with US ext. intl.
     // This is great and all OS' should do it like this!
     // And I am happy that I have independently invented this in my bespoke/support layout :-D
     QUOTE_MODE_ANSI,
-    // This is for US ext intl Linux as in QMK's header file.
+    // This is for US ext intl Linux as in QMK's header file. (Currently not used.)
     QUOTE_MODE_LINUX,
-    // This is probably a bug in Samsungs Galaxy Tab S9 FE+ (and who knows how many other similar devices).
-    // It's here since I can workaround it quickly and have no hopes of the bug getting fixed.
+    // Maybe I should call it quote mode Windows, because it seems to be the same and Windows is the better known implementation.
     QUOTE_MODE_SAMSUNG,
 };
 
@@ -76,7 +79,8 @@ const char *const quote_mode_names[] = {
     [QUOTE_MODE_SAMSUNG] = "Samsung",
 };
 
-int current_quote_mode = QUOTE_MODE_ANSI;
+// personal preference for my current main device.
+int current_quote_mode = QUOTE_MODE_SAMSUNG;
 
 // previous and next word cursor navigation
 // (This helps avoid pressing Ctrl modifier in addition to the layer toggle.)
@@ -117,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Dead tilde for accents can be obtained with Shift+US_DGRV aka AltGr+Shift+2.
     // Same trick works for diaresis accent: AltGr+Shift+1. (When the device is on US ANSI, this is the fallback to get a double quote!)
     [L_ALTGR] = LAYOUT(
-            KC_NO  , US_DGRV, US_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_DEL ,
+            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_DEL ,
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_DEG , KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR, US_TILD,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_MICR, US_SS  , US_UDIA, US_ODIA, US_ADIA, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_NO  , KC_NO  , KC_BSLS, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, KC_NO,
@@ -140,13 +144,13 @@ const int SEND_STRING_DELAY_MS = 10;
 void toggle_quote_mode(void) {
     switch (current_quote_mode) {
         case QUOTE_MODE_ANSI:
-            current_quote_mode = QUOTE_MODE_LINUX;
-            break;
-        case QUOTE_MODE_LINUX:
+        //     current_quote_mode = QUOTE_MODE_LINUX;
+        //     break;
+        // case QUOTE_MODE_LINUX:
             current_quote_mode = QUOTE_MODE_SAMSUNG;
             break;
         case QUOTE_MODE_SAMSUNG:
-            current_quote_mode = QUOTE_MODE_LINUX;
+            current_quote_mode = QUOTE_MODE_ANSI;
             break;
     }
 }
@@ -158,14 +162,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (!record->event.pressed) return false;
             switch (current_quote_mode) {
                 case QUOTE_MODE_ANSI:
-                    send_string("'");
+                    tap_code(KC_QUOT);
                     return false;
                 case QUOTE_MODE_LINUX:
-                    send_string(SS_RALT("'"));
+                    tap_code16(ALGR(KC_QUOT));
                     return false;
                 case QUOTE_MODE_SAMSUNG:
                     // it's a dead key with only one mapping, namely the key itself.
-                    send_string_with_delay(SS_RALT("''"), SEND_STRING_DELAY_MS);
+                    tap_code(KC_QUOT);
+                    tap_code(KC_SPACE);
                     return false;
             }
         case MX_DQUO:
@@ -173,17 +178,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (!record->event.pressed) return false;
             switch (current_quote_mode) {
                 case QUOTE_MODE_ANSI:
-                    send_string("\"");
+                    // need tap_code16, because it actually needs to press and hold Shift as part of this virtual key code.
+                    tap_code16(KC_DQUO);
+                    return false;
+                case QUOTE_MODE_LINUX:
+                    // Explicit AltGr, implicit Shift.
+                    tap_code16(ALGR(KC_DQUO));
+                    return false;
+                case QUOTE_MODE_SAMSUNG:
+                    // it's a dead key with only one mapping, namely the key itself.
+                    tap_code16(KC_DQUO);
+                    tap_code(KC_SPACE);
+                    return false;
+            }
+        case MX_ACUT:
+            // We only handle the press event.
+            if (!record->event.pressed) return false;
+            switch (current_quote_mode) {
+                case QUOTE_MODE_ANSI:
+                    tap_code16(ALGR(KC_QUOT));
                     return false;
                 case QUOTE_MODE_LINUX:
                 case QUOTE_MODE_SAMSUNG:
-                    send_string(SS_RALT("\""));
+                    tap_code(KC_QUOT);
                     return false;
             }
-        // US_ACUT only works in Linux, but on Android we can make it using the on-screen keyboard if needed.
-        // We might also need different handling for KC_GRV, but I think that if variants are different,
-        // they are just swapping US_GRV and US_DGRV (i.e. the mapping of the base key and its AltGr character).
-        // Both are accessible in the layout and users can just swap them mentally.
         case MX_VERS:
             if (record->event.pressed) {
                 send_string_with_delay("Layout ASDR_NILT standalone, rev03-quote-modes, ", SEND_STRING_DELAY_MS);
