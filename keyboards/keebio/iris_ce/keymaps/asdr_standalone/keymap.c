@@ -51,9 +51,32 @@ enum layer_names {
 // Macros!
 enum custom_keycodes {
     MX_VERS = SAFE_RANGE,
-    MX_DASH
+    MX_DASH,
+    MX_QUOT,
+    MX_DQUO,
+    MX_TGM ,  // toggle quote mode
 };
 
+enum quote_mode {
+    // this works for the standard US keyboard on all platforms,
+    // but on Google Pixel 4a it even works with US ext. intl.
+    // This is great and all OS' should do it like this!
+    // And I am happy that I have independently invented this in my bespoke/support layout :-D
+    QUOTE_MODE_ANSI,
+    // This is for US ext intl Linux as in QMK's header file.
+    QUOTE_MODE_LINUX,
+    // This is probably a bug in Samsungs Galaxy Tab S9 FE+ (and who knows how many other similar devices).
+    // It's here since I can workaround it quickly and have no hopes of the bug getting fixed.
+    QUOTE_MODE_SAMSUNG,
+};
+
+const char *const quote_mode_names[] = {
+    [QUOTE_MODE_ANSI] = "ANSI",
+    [QUOTE_MODE_LINUX] = "Linux",
+    [QUOTE_MODE_SAMSUNG] = "Samsung",
+};
+
+int current_quote_mode = QUOTE_MODE_ANSI;
 
 // previous and next word cursor navigation
 // (This helps avoid pressing Ctrl modifier in addition to the layer toggle.)
@@ -76,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [L_BASE] = LAYOUT(
             L3_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
-            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_QUOT,                     KC_Z, KC_K, KC_U, KC_O, KC_P, KC_PGUP,
+            KC_TAB , KC_Q, KC_W, KC_B, KC_F, MX_QUOT,                     KC_Z, KC_K, KC_U, KC_O, KC_P, KC_PGUP,
             KL_SHFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H, KC_N, KC_I, KC_L, KC_T, KL_SHFT,
             KC_LCTL, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , KC_J, KC_M, KC_COMM, KC_DOT, L2_MINS, KC_PGDN,
                                              KC_LALT, KC_DEL ,   KC_SPC , L2_ENT, KC_E, KC_RCTL
@@ -84,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // slightly modified shift layer
     [L_SHIFT] = LAYOUT(
               L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                        US_PLUS, S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
-            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F), S(US_QUOT),                        S(KC_Z), S(KC_K), S(KC_U), S(KC_O), S(KC_P), S(KC_PGUP),
+            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   MX_DQUO ,                        S(KC_Z), S(KC_K), S(KC_U), S(KC_O), S(KC_P), S(KC_PGUP),
               KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
             S(KC_LCTL), S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   KC_BSLS , S(KC_LGUI),   L3_INS , S(KC_J), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(KC_PGDN),
                                                 S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E), S(KC_RCTL)
@@ -103,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // function layer, like on a laptop.
     [L_FN] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
-            MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
+            MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , MX_TGM ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
             KC_LSFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, KC_NO  ,
 			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
                                                 KC_LALT, KC_NO  , KC_NO  ,     OS_ALGR, KC_NO  , KC_RCTL
@@ -112,26 +135,81 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 // 3 ms still had some dropped letters.
-const int SEND_STRING_DELAY_MS = 5;
+const int SEND_STRING_DELAY_MS = 10;
+
+void toggle_quote_mode(void) {
+    switch (current_quote_mode) {
+        case QUOTE_MODE_ANSI:
+            current_quote_mode = QUOTE_MODE_LINUX;
+            break;
+        case QUOTE_MODE_LINUX:
+            current_quote_mode = QUOTE_MODE_SAMSUNG;
+            break;
+        case QUOTE_MODE_SAMSUNG:
+            current_quote_mode = QUOTE_MODE_LINUX;
+            break;
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-      case MX_VERS:
-        if (record->event.pressed) {
-            send_string_with_delay("Layout ASDR_NILT standalone, rev02, ", SEND_STRING_DELAY_MS);
-            send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
-        } else {
-            // when keycode is released
-        }
-        break;
-
+        case MX_QUOT:
+            // We only handle the press event.
+            if (!record->event.pressed) return false;
+            switch (current_quote_mode) {
+                case QUOTE_MODE_ANSI:
+                    send_string("'");
+                    return false;
+                case QUOTE_MODE_LINUX:
+                    send_string(SS_RALT("'"));
+                    return false;
+                case QUOTE_MODE_SAMSUNG:
+                    // it's a dead key with only one mapping, namely the key itself.
+                    send_string_with_delay(SS_RALT("''"), SEND_STRING_DELAY_MS);
+                    return false;
+            }
+        case MX_DQUO:
+            // We only handle the press event.
+            if (!record->event.pressed) return false;
+            switch (current_quote_mode) {
+                case QUOTE_MODE_ANSI:
+                    send_string("\"");
+                    return false;
+                case QUOTE_MODE_LINUX:
+                case QUOTE_MODE_SAMSUNG:
+                    send_string(SS_RALT("\""));
+                    return false;
+            }
+        // US_ACUT only works in Linux, but on Android we can make it using the on-screen keyboard if needed.
+        // We might also need different handling for KC_GRV, but I think that if variants are different,
+        // they are just swapping US_GRV and US_DGRV (i.e. the mapping of the base key and its AltGr character).
+        // Both are accessible in the layout and users can just swap them mentally.
+        case MX_VERS:
+            if (record->event.pressed) {
+                send_string_with_delay("Layout ASDR_NILT standalone, rev03-quote-modes, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
+                send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
+                send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);
+                send_string_with_delay("\n", SEND_STRING_DELAY_MS);
+            } else {
+                // when keycode is released
+            }
+            return false;
+        case MX_TGM:
+            if (record->event.pressed) {
+                toggle_quote_mode();
+            } else {
+                // when keycode is released
+            }
+            return false;
         case MX_DASH:
-        if (record->event.pressed) {
-            // TODO
-        } else {
-        }
-        break;
+            if (record->event.pressed) {
+                // TODO
+            } else {
+            }
+            return false;
     }
+    // all other cases to be handled by QMK.
     return true;
 };
 
