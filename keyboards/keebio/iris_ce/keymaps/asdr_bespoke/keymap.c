@@ -21,6 +21,9 @@
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
+// and the Control key, too.
+#define MCTL_QT  MT(MOD_LCTL, KC_QUOT)
+
 // One-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
 // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
 #define OS_ALGR  OSM(MOD_RALT)
@@ -35,9 +38,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [0] = LAYOUT(
             L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
-            KC_TAB , KC_Q, KC_W, KC_B, KC_F, KC_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
+            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_ODIA,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
-            KC_LCTL, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, US_ADIA, KC_M, KC_COMM, KC_DOT, L1_MINS, US_ODIA,
+            MCTL_QT, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, US_ADIA,
                                      KC_LALT, KC_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
         ),
     // alternate character and navigation layer
@@ -45,9 +48,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Dead tilde for accents can be obtained with Shift+US_GRV as on any other keyboard.
     // I just mention it, because this and capital JÇ are the only characters that need pressing both Shift and AltGr.
     [1] = LAYOUT(
-            KC_NO  , KX_DGRV, KX_ACUT, US_SECT, US_EURO, US_CENT,                       KX_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_DEL ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_GRV ,                       US_SS  , US_DEG , KC_LCBR, KC_RCBR, KC_TILD, US_CCED,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_MICR, KC_J   , KX_LPRN, KX_RPRN, US_NTIL, KC_RSFT,
+            KC_NO  , KX_DGRV, KX_ACUT, US_SECT, US_EURO, US_CENT,                       KX_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SS  , KC_DEL ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_GRV ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, KC_TILD, US_CCED,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_MICR, KX_LPRN, KX_RPRN, US_NTIL, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_PGUP, KC_PGDN, KC_BSLS, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KX_LT  , KX_GT  , KX_DASH, KC_NO  ,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
@@ -68,7 +71,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
       case MX_VERS:
         if (record->event.pressed) {
-            send_string_with_delay("Layout ASDR_NILT bespoke, rev06-main-layer-umlauts-beta-00, ", SEND_STRING_DELAY_MS);
+            send_string_with_delay("Layout ASDR_NILT bespoke, rev07-main-layer-umlauts-and-j, ", SEND_STRING_DELAY_MS);
             send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
         } else {
             // when keycode is released
