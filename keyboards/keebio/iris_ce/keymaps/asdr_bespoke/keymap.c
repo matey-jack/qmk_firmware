@@ -21,8 +21,9 @@
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
-// and the Control key, too.
-#define MCTL_QT  MT(MOD_LCTL, KC_QUOT)
+// Mod/Tap for Control and "ö". We can't use US_ODIA here, because the AltGr bit in that will be dropped.
+// But we can distinguish this key from the normal KC_O, because our function callback receives the full MT keycode.
+#define MC_ODIA  MT(MOD_LCTL, KC_O)
 
 // One-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
 // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
@@ -31,16 +32,15 @@
 // Macros!
 enum custom_keycodes {
     MX_VERS = SAFE_RANGE,
-    MX_DASH
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [0] = LAYOUT(
             L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
-            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_ODIA,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
+            KC_TAB , KC_Q, KC_W, KC_B, KC_F, KC_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
-            MCTL_QT, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, US_ADIA,
+            MC_ODIA, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, US_ADIA,
                                      KC_LALT, KC_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
         ),
     // alternate character and navigation layer
@@ -71,10 +71,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
       case MX_VERS:
         if (record->event.pressed) {
-            send_string_with_delay("Layout ASDR_NILT bespoke, rev07-main-layer-umlauts-and-j, ", SEND_STRING_DELAY_MS);
+            send_string_with_delay("Layout ASDR_NILT bespoke, rev07b-corner-oe-center-quote, ", SEND_STRING_DELAY_MS);
             send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
         } else {
             // when keycode is released
+        }
+        return false;
+      case MC_ODIA:
+        // only handle the press event in "tap" mode.
+        if (record->tap.count && record->event.pressed) {
+            uint16_t shifted = (get_mods() & MOD_MASK_SHIFT);
+            tap_code16(shifted ? S(US_ODIA) : US_ODIA);
+            return false;
         }
         break;
     }

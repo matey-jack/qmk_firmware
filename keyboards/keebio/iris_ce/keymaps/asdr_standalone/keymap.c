@@ -53,12 +53,12 @@ enum custom_keycodes {
     MX_VERS = SAFE_RANGE,
     MX_DASH,  // TODO: this is for n-dash, but not sure how to make that work on Android.
     // Next three are for characters that need different key taps on Google Pixel and other devices.
-    // Toggled by MX_TGM.
+    // Toggled by MX_TQM.
     MX_QUOT,
     MX_ACUT,
     MX_DQUO,
     // KC_GRV aka US_DGRV works same on both devices, it produces a dead grave.
-    MX_TGM ,  // toggle quote mode
+    MX_TQM ,  // toggle quote mode
 };
 
 enum quote_mode {
@@ -87,13 +87,23 @@ int current_quote_mode = QUOTE_MODE_SAMSUNG;
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
 
+// the virtual "shift" layer is the only one without tap/hold double duty.
+// (Shift+letter is used in fast typing and could lead to accidental taps when hold was meant.)
 #define KL_SHFT  MO(L_SHIFT)
+
+// other layer toggles all have an additional tap function.
 #define L2_Y     LT(L_ALTGR, KC_Y)
 #define L2_X     LT(L_ALTGR, KC_X)
 #define L2_MINS  LT(L_ALTGR, KC_MINS)
 #define L2_ENT   LT(L_ALTGR, KC_ENT)
 #define L3_ESC   LT(L_FN, KC_ESC)
 #define L3_INS   LT(L_FN, KC_INS)
+
+// Mod/Tap for Control and "ö". We can't use US_ODIA here, because the AltGr bit in that will be dropped.
+// But we can distinguish this key from the normal KC_O, because our function callback receives the full MT keycode.
+#define MC_ODIA  MT(MOD_LCTL, KC_O)
+// Due to the "virtual Shift" layer, we need a separate one for the capital "Ö".
+#define MS_ODIA  MT(MOD_LSFT | MOD_LCTL, US_ODIA)
 
 // One-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
 // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
@@ -105,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             L3_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, MX_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KL_SHFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KL_SHFT,
-            KC_LCTL, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , US_ADIA, KC_M, KC_COMM, KC_DOT, L2_MINS, US_ODIA,
+            MC_ODIA, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, US_ADIA,
                                              KC_LALT, KC_DEL ,   KC_SPC , L2_ENT, KC_E, KC_RCTL
         ),
     // slightly modified shift layer
@@ -113,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
               L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                          US_PLUS , S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
             S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   MX_DQUO ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P), S(US_UDIA),
               KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H   ), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
-            S(KC_LCTL), S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   KC_BSLS , S(KC_LGUI),   L3_INS , S(US_ADIA), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(US_ODIA),
+              MS_ODIA , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   KC_BSLS , S(KC_LGUI),   L3_INS , S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(US_ADIA),
                                                 S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E   ), S(KC_RCTL)
         ),
     // alternate character and navigation layer
@@ -121,16 +131,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Dead tilde for accents can be obtained with Shift+US_DGRV aka AltGr+Shift+2.
     // Same trick works for diaresis accent: AltGr+Shift+1. (When the device is on US ANSI, this is the fallback to get a double quote!)
     [L_ALTGR] = LAYOUT(
-            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_IQUE, KC_DEL ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_SS  , US_DEG , KC_LCBR, KC_RCBR, US_TILD, US_CCED,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_MICR, KC_J   , KC_LPRN, KC_RPRN, US_NTIL, KC_RSFT,
+            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SS  , KC_DEL ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, US_TILD, US_CCED,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_MICR, KC_LPRN, KC_RPRN, US_NTIL, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_NO  , KC_PGUP, KC_PGDN, KC_BSLS, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, KC_NO  ,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
     [L_FN] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
-            MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , MX_TGM ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
+            MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , MX_TQM ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
             KC_LSFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, KC_NO  ,
 			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
                                                 KC_LALT, KC_NO  , KC_NO  ,     OS_ALGR, KC_NO  , KC_RCTL
@@ -158,8 +168,21 @@ void toggle_quote_mode(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case MC_ODIA:
+            // only handle the press event in "tap" mode.
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(US_ODIA);
+                return false;
+            }
+            break;
+        case MS_ODIA:
+            // only handle the press event in "tap" mode.
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(S(US_ODIA));
+                return false;
+            }
+            break;
         case MX_QUOT:
-            // We only handle the press event.
             if (!record->event.pressed) return false;
             switch (current_quote_mode) {
                 case QUOTE_MODE_ANSI:
@@ -175,7 +198,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
             }
         case MX_DQUO:
-            // We only handle the press event.
             if (!record->event.pressed) return false;
             switch (current_quote_mode) {
                 case QUOTE_MODE_ANSI:
@@ -193,7 +215,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
             }
         case MX_ACUT:
-            // We only handle the press event.
             if (!record->event.pressed) return false;
             switch (current_quote_mode) {
                 case QUOTE_MODE_ANSI:
@@ -206,7 +227,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev04-main-layer-umlauts, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev05-main-layer-umlauts-and-j, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);
@@ -215,7 +236,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 // when keycode is released
             }
             return false;
-        case MX_TGM:
+        case MX_TQM:
             if (record->event.pressed) {
                 toggle_quote_mode();
             } else {
