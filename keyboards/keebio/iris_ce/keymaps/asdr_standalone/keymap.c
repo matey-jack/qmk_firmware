@@ -96,8 +96,11 @@ int current_quote_mode = QUOTE_MODE_SAMSUNG;
 // other layer toggles all have an additional tap function.
 #define L2_Y     LT(L_ALTGR, KC_Y)
 #define L2_X     LT(L_ALTGR, KC_X)
+#define L2_DEL   LT(L_ALTGR, KC_DEL)
+
 #define L2_MINS  LT(L_ALTGR, KC_MINS)
 #define L2_ENT   LT(L_ALTGR, KC_ENT)
+
 #define L3_ESC   LT(L_FN, KC_ESC)
 #define L3_INS   LT(L_FN, KC_INS)
 
@@ -124,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, MX_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KL_SHFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KL_SHFT,
             MC_ODIA, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, US_ADIA,
-                                             KC_LALT, KC_DEL ,   KC_SPC , L2_ENT, KC_E, KC_RCTL
+                                             KC_LALT, L2_DEL ,   KC_SPC , L2_ENT, KC_E, KC_RCTL
         ),
     // slightly modified shift layer
     [L_SHIFT] = LAYOUT(
@@ -235,7 +238,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev06-OSMs+top-bottom-nav, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev07-L1-left-thumb, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);

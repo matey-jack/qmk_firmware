@@ -17,9 +17,12 @@
 // layer toggles all have double duty.
 #define L1_Y     LT(1, KC_Y)
 #define L1_X     LT(1, KC_X)
+#define L1_DEL   LT(1, KC_DEL)
+
+#define L1_ENT   LT(1, KC_ENT)
 #define L1_DOT   LT(1, KC_DOT)
 #define L1_MINS  LT(1, KC_MINS)
-#define L1_ENT   LT(1, KC_ENT)
+
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
@@ -51,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, KC_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
             MC_ODIA, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, US_ADIA,
-                                     KC_LALT, KC_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
+                                     KC_LALT, L1_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
@@ -81,7 +84,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
       case MX_VERS:
         if (record->event.pressed) {
-            send_string_with_delay("Layout ASDR_NILT bespoke, rev08-OSMs+top-bottom-nav, ", SEND_STRING_DELAY_MS);
+            send_string_with_delay("Layout ASDR_NILT bespoke, rev09-L1-left-thumb, ", SEND_STRING_DELAY_MS);
             send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
         } else {
             // when keycode is released
