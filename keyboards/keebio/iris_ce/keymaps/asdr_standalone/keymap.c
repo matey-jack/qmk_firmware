@@ -86,6 +86,8 @@ int current_quote_mode = QUOTE_MODE_SAMSUNG;
 // (This helps avoid pressing Ctrl modifier in addition to the layer toggle.)
 #define KC_PRWD  LCTL(KC_LEFT)
 #define KC_NXWD  LCTL(KC_RGHT)
+#define KC_TOP   LCTL(KC_HOME)
+#define KC_BOTT  LCTL(KC_END )
 
 // the virtual "shift" layer is the only one without tap/hold double duty.
 // (Shift+letter is used in fast typing and could lead to accidental taps when hold was meant.)
@@ -105,9 +107,15 @@ int current_quote_mode = QUOTE_MODE_SAMSUNG;
 // Due to the "virtual Shift" layer, we need a separate one for the capital "Ö".
 #define MS_ODIA  MT(MOD_LSFT | MOD_LCTL, US_ODIA)
 
+// One-shot-mods as an optional way to enter shortcuts with several modifiers.
+#define OSM_ALT  OSM(MOD_LALT)
+#define OSM_CTL  OSM(MOD_LCTL)
+#define OSM_SFT  OSM(MOD_LSFT)
+#define OSM_GUI  OSM(MOD_LGUI)
+
 // One-shot-mod AltGr key, so we can access all characters from software layout AltGr, that don't have
 // a direct mapping in our firmware AltGr layer. (Meant for rare characters and as workaround for mapping bugs.)
-#define OS_ALGR  OSM(MOD_RALT)
+#define OSM_AGR  OSM(MOD_RALT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
@@ -134,16 +142,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SS  , KC_DEL ,
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, US_TILD, US_CCED,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_MICR, KC_LPRN, KC_RPRN, US_NTIL, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_NO  , KC_PGUP, KC_PGDN, KC_BSLS, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, KC_NO  ,
+			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, KC_NO  ,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
     [L_FN] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
             MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , MX_TQM ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
-            KC_LSFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, KC_NO  ,
-			KC_LCTL, KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_NO  , KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
-                                                KC_LALT, KC_NO  , KC_NO  ,     OS_ALGR, KC_NO  , KC_RCTL
+            OSM_SFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, OSM_SFT  ,
+			OSM_CTL, KC_NO, KC_NO, C(KC_PGUP), C(KC_PGDN), KC_NO, KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
+                                                OSM_ALT, KC_NO  , KC_NO  ,     OSM_AGR, KC_NO  , OSM_CTL
         )
 };
 
@@ -227,7 +235,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev05-main-layer-umlauts-and-j, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev06-OSMs+top-bottom-nav, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);

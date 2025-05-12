@@ -1,3 +1,5 @@
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
 // this value comes from my experience with Ergodox.
 #define TAPPING_TERM 250
 
