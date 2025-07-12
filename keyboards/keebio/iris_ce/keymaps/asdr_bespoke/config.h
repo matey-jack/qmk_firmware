@@ -1,7 +1,11 @@
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
-// this value comes from my experience with Ergodox.
-#define TAPPING_TERM 250
+// This value is much higher than many of my actual hold-applications.
+// But that should be fine, since those are handled by the "permissive hold" feature, not the actual timer.
+// On the other hand, the high value avoids misreadings of a key roll (overlapping typing of "ys", for example) as a hold.
+// The only reason to have this smaller than infinite is because sometimes the hold is used together with the mouse.
+// (Ctrl+Scroll for zoom and Ctrl+Click.)
+#define TAPPING_TERM 500
 
 // Switch to Hold mode before tapping term, when other key is pressed _and_ released,
 // all before the tap/hold key is released.
