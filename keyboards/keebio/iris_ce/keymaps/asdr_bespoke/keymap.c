@@ -26,9 +26,10 @@
 #define L2_ESC   LT(2, KC_ESC)
 #define L2_INS   LT(2, KC_INS)
 
-// Mod/Tap for Control and "ö". We can't use US_ODIA here, because the AltGr bit in that will be dropped.
+// Mod/Tap for Control and "ö" / "ä". We can't use US_ODIA here, because the AltGr bit in that will be dropped.
 // But we can distinguish this key from the normal KC_O, because our function callback receives the full MT keycode.
 #define MC_ODIA  MT(MOD_LCTL, KC_O)
+#define MC_ADIA  MT(MOD_RCTL, KC_A)
 
 // One-shot-mods as an optional way to enter shortcuts with several modifiers.
 // We map those on the Fn layer, because F-keys are often involved in this.
@@ -53,8 +54,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             L2_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, KC_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
             KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
-            MC_ODIA, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,    L2_INS, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, US_ADIA,
-                                     KC_LALT, L1_DEL, KC_SPC ,    L1_ENT, KC_E   , KC_RCTL
+            MC_ODIA, L1_Y, L1_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   KC_RGUI, KC_J   , KC_M, KC_COMM, KC_DOT, L1_MINS, MC_ADIA,
+                                     KC_LALT, L1_DEL, KC_SPC ,    L1_ENT, KC_E   , L2_INS
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
@@ -64,16 +65,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_NO  , KX_DGRV, KX_ACUT, US_SECT, US_EURO, US_CENT,                       KX_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SS  , KC_DEL ,
             KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_GRV ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, KC_TILD, US_CCED,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_MICR, KX_LPRN, KX_RPRN, US_NTIL, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KX_LT  , KX_GT  , KX_DASH, KC_NO  ,
-                                                KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
+			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_RGUI, US_MUL , KC_EQL , KX_LT  , KX_GT  , KX_DASH, KC_RCTL,
+                                                KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_NO
         ),
     // function layer, like on a laptop.
     [2] = LAYOUT(
             KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR ,
             MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
-            OSM_SFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, OSM_SFT  ,
-			OSM_CTL, KC_NO, KC_NO, C(KC_PGUP), C(KC_PGDN), KC_NO, KC_LGUI,     KC_TRNS, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
-                                                OSM_ALT, KC_NO  , KC_NO  ,     OSM_AGR, KC_NO  , OSM_CTL
+            OSM_SFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, OSM_SFT,
+			OSM_CTL, KC_NO, KC_NO, C(KC_PGUP), C(KC_PGDN), KC_NO, OSM_GUI,     OSM_GUI, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MPLY, OSM_CTL,
+                                                OSM_ALT, KC_NO  , KC_NO  ,     OSM_AGR, KC_NO  , KC_NO
         ),
 };
 
@@ -95,6 +96,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->tap.count && record->event.pressed) {
             uint16_t shifted = (get_mods() & MOD_MASK_SHIFT);
             tap_code16(shifted ? S(US_ODIA) : US_ODIA);
+            return false;
+        }
+        break;
+      case MC_ADIA:
+        // only handle the press event in "tap" mode.
+        if (record->tap.count && record->event.pressed) {
+            uint16_t shifted = (get_mods() & MOD_MASK_SHIFT);
+            tap_code16(shifted ? S(US_ADIA) : US_ADIA);
             return false;
         }
         break;
