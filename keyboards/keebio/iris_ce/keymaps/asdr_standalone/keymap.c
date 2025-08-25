@@ -143,7 +143,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Same trick works for diaresis accent: AltGr+Shift+1. (When the device is on US ANSI, this is the fallback to get a double quote!)
     [L_ALTGR] = LAYOUT(
             KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_MICR, KC_DEL ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, US_TILD, US_GRV,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       US_SS  , KC_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_GRV,
             KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_NTIL, KC_LPRN, KC_RPRN, US_CCED, KC_RSFT,
 			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, L3_INS ,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
