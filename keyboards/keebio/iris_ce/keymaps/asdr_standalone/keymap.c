@@ -124,17 +124,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // standard keyboard layer
     [L_BASE] = LAYOUT(
             L3_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
-            KC_TAB , KC_Q, KC_W, KC_B, KC_F, MX_QUOT,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , US_UDIA,
+            KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_DIAE,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , MX_QUOT,
             KL_SHFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KL_SHFT,
-            MC_ODIA, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, US_ADIA,
-                                             KC_LALT, L2_DEL ,   KC_SPC , L2_ENT, KC_E, KC_RCTL
+            KC_LCTL, L2_Y, L2_X, KC_C, KC_V, KC_SLSH, KC_LGUI,   L3_INS , KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, L3_INS,
+                                             KC_LALT, L2_DEL ,   KC_SPC , L2_ENT , KC_E, KC_RCTL
         ),
     // slightly modified shift layer
     [L_SHIFT] = LAYOUT(
-              L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                          US_PLUS , S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
-            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   MX_DQUO ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P), S(US_UDIA),
+              L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                        S(KC_6   ), S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
+            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   KC_PLUS ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P),   MX_DQUO ,
               KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H   ), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
-              MS_ODIA , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   KC_BSLS , S(KC_LGUI),   L3_INS , S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(US_ADIA),
+              KC_LCTL , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   KC_BSLS , S(KC_LGUI),   L3_INS , S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS,   L3_INS,
                                                 S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E   ), S(KC_RCTL)
         ),
     // alternate character and navigation layer
@@ -142,10 +142,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Dead tilde for accents can be obtained with Shift+US_DGRV aka AltGr+Shift+2.
     // Same trick works for diaresis accent: AltGr+Shift+1. (When the device is on US ANSI, this is the fallback to get a double quote!)
     [L_ALTGR] = LAYOUT(
-            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SS  , KC_DEL ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, US_GRV ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, US_TILD, US_CCED,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_MICR, KC_LPRN, KC_RPRN, US_NTIL, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, KC_NO  ,
+            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_MICR, KC_DEL ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       US_SS  , KC_NO  , KC_LCBR, KC_RCBR, US_TILD, US_GRV,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_NTIL, KC_LPRN, KC_RPRN, US_CCED, KC_RSFT,
+			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_NO  , US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, L3_INS ,
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
@@ -238,7 +238,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev10-timeless, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev11-combining-umlauts, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);
