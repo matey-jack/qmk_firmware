@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // slightly modified shift layer
     [L_SHIFT] = LAYOUT(
               L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                          KC_PLUS , S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
-            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   US_DCIR ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P),   US_EURO ,
+            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   US_DCIR ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P),   US_SS   ,
               KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H   ), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
               KC_LCTL , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   MX_DQUO , S(KC_LGUI),   KC_RGUI, S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS,   L3_INS,
                                                 S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E   ), S(KC_RCTL)
@@ -228,7 +228,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev11-combining-umlauts, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev12-combining-umlauts-shift-sz, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);
