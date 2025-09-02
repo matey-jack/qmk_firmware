@@ -52,6 +52,7 @@ enum layer_names {
 enum custom_keycodes {
     MX_VERS = SAFE_RANGE,
     MX_DASH,  // TODO: this is for n-dash, but not sure how to make that work on Android.
+    MX_PMIL,  // TODO: per-mille sign
     // Next three are for characters that need different key taps on Google Pixel and other devices.
     // Toggled by MX_TQM.
     MX_QUOT,
@@ -131,26 +132,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
               L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                          KC_PLUS , S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
             S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   US_DCIR ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P),   US_SS   ,
               KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H   ), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
-              KC_LCTL , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   MX_DQUO , S(KC_LGUI),   KC_RGUI, S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS,   L3_INS,
+              KC_LCTL , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   MX_DQUO , S(KC_LGUI),   KC_RGUI, S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(KC_INS) ,
                                                 S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E   ), S(KC_RCTL)
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
     // Dead tilde for accents can be obtained with Shift+US_DGRV aka AltGr+Shift+2.
-    // Same trick works for diaresis accent: AltGr+Shift+1. (When the device is on US ANSI, this is the fallback to get a double quote!)
+    // TODO: the "live" US_GRV, US_CIRC and US_TILD don't work on US ext. int'l. We should fix that with the US ext. int'l compat plus layout.
     [L_ALTGR] = LAYOUT(
-            KC_NO  , US_DGRV, MX_ACUT, US_SECT, US_EURO, US_CENT,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_MICR, KC_DEL ,
-            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       US_SS  , KC_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_GRV,
-            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_DEG , US_NTIL, KC_LPRN, KC_RPRN, US_CCED, KC_RSFT,
-			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_RGUI, US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, L3_INS ,
+            KC_NO  , US_DGRV, MX_ACUT, US_CENT, US_EURO, MX_PMIL,                       US_CIRC, KC_PIPE, KC_LBRC, KC_RBRC, US_SECT, KC_DEL ,
+            KC_NO  , KC_NO  , KC_PRWD, KC_UP  , KC_NXWD, KC_NO  ,                       US_DEG , KC_BSLS, KC_LCBR, KC_RCBR, US_TILD, US_MICR,
+            KC_LSFT, KC_HOME, KC_LEFT, KC_DOWN, KC_RGHT, KC_END ,                       US_GRV , US_NTIL, KC_LPRN, KC_RPRN, US_CCED, KC_RSFT,
+			KC_LCTL, KC_TRNS, KC_TOP , KC_PGUP, KC_PGDN, KC_BOTT, KC_LGUI,     KC_RGUI, US_MUL , KC_EQL , KC_LT  , KC_GT  , MX_DASH, C(KC_INS),
                                                 KC_LALT, KC_BSPC, KC_ENT ,     KC_SPC , KC_NO  , KC_RCTL
         ),
     // function layer, like on a laptop.
     [L_FN] = LAYOUT(
-            KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR,
+            KC_TRNS, KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  ,                       KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , EE_CLR ,
             MX_VERS, KC_F11 , KC_F12 , KC_NO  , KC_NO  , MX_TQM ,                       KC_NO  , RM_TOGG, RM_HUED, RM_SATD, RM_VALD, QK_BOOT,
-            OSM_SFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, OSM_SFT  ,
-			OSM_CTL, KC_NO, KC_NO, C(KC_PGUP), C(KC_PGDN), KC_NO, KC_LGUI,     KC_RGUI, KC_NO  , KC_MUTE, KC_VOLD, KC_VOLU, KC_MSTP, KC_MPLY,
+            OSM_SFT, KC_MPRV, KC_MNXT, KC_NO  , KC_NO  , KC_NO  ,                       KC_NO  , RM_NEXT, RM_HUEU, RM_SATU, RM_VALU, OSM_SFT,
+			OSM_CTL, KC_NO, KC_NO, C(KC_PGUP), C(KC_PGDN), KC_NO, KC_LGUI,     KC_RGUI, KC_MSTP, KC_MPLY, KC_VOLD, KC_VOLU, KC_MUTE, KC_NO  ,
                                                  OSM_ALT , KC_NO, KC_NO  ,     OSM_AGR, KC_NO  , OSM_CTL
         )
 };

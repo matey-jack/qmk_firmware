@@ -22,5 +22,6 @@
 #define KX_LPRN ALGR(KC_9)
 #define KX_RPRN ALGR(KC_0)
 
-// And one new character which isn't mapped in standard US intl.
+// New characters which aren't mapped in standard US intl.
 #define KX_DASH  S(ALGR(US_MINS))
+#define KX_PMIL  S(ALGR(US_MINS))  // TODO: per-mille sign.
