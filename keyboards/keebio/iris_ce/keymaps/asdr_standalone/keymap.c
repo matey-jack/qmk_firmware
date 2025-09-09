@@ -1,30 +1,6 @@
 /*
- *   This layout aims to behave as closely as possible to 'asdr_bespoke', without needing to have a custom "support"
- *   software layout installed on the computer.  It targets standard US ANSI and US ext. int'l as software layouts.
-
- The obvious advantage of this is that the layout works on any computer including Chromebooks and Android devices!
- I am actually looking forward to use the nice and portable Iris keyboard with an Android tablet to create a really
- neat and ergonomic travel setup. Remember that a tablet screen can be positioned independently of the keyboard, so it's
- much easier to create an ergonomic setup than when using a laptop's built-in keyboard!
-
- Some necessary limitations are:
-  - no nice extra Unicode characters like – (n-dash)
-  - ' and " are dead keys on Winwdows US ext int'l, because they are mapped as in the Linux version of US ext int'l
-     But they work fine on Windows when using US ANSI. Basically, on Windows you can work okay by switching to US ANSI
-     to type English text or programming stuff, and switch to US ext. int'l to type German texts. (Then the extra tap
-     on the space key to create ' and " will only be there in German mode.)
-
- One other limitation that I am still working on minimizing:
-  - Since I want the Shift+character mappings to work exactly as in the 'bespoke' layout, I created a separate layer
-    that is activated by the Shift keys. This means that Shift key press/release will not be sent to the computer any
-    more. We thus need to include some other ways to make actions like Shift+Click or Shift+Navigation keys possible.
-  - Most of this works in rather intuitive ways (Shift+PgUp/Dn is 100% the same), other cases have some limitations
-    (AltGr+Shift+CursorKeys requires AltGr to be pressed first to get into the right layer. On the bespoke layout, you
-    can press both at the same time or in any order.)
-  - And to get Shift+Click, you need to use AltGr+Shift+Click (until someone thinks of a nicer shortcut,
-    maybe a separate tap/hold key just for that use-case...
-
- *
+    "The Cozy Keyboard" letter mapping with a mix of US ANSI and DE Qwertz shift mapping to accomodate for
+    the reduced number of keys on the Iris keyboard.
  */
 
 #include QMK_KEYBOARD_H
@@ -36,7 +12,6 @@
 
 enum layer_names {
     L_BASE,
-    L_SHIFT,
     L_ALTGR,
     L_FN,
 };
@@ -89,17 +64,13 @@ int current_quote_mode = QUOTE_MODE_SAMSUNG;
 #define KC_TOP   LCTL(KC_HOME)
 #define KC_BOTT  LCTL(KC_END )
 
-// the virtual "shift" layer is the only one without tap/hold double duty.
-// (Shift+letter is used in fast typing and could lead to accidental taps when hold was meant.)
-#define KL_SHFT  MO(L_SHIFT)
-
 // other layer toggles all have an additional tap function.
-#define L2_Y     LT(L_ALTGR, KC_Y)
-#define L2_X     LT(L_ALTGR, KC_X)
 #define L2_DEL   LT(L_ALTGR, KC_DEL)
-
-#define L2_MINS  LT(L_ALTGR, KC_MINS)
 #define L2_ENT   LT(L_ALTGR, KC_ENT)
+
+// auxiliary layer keys, partly for historical reasons, partly because some combos are more comfortable this way.
+#define L2_Y     LT(L_ALTGR, KC_Y)
+#define L2_MINS  LT(L_ALTGR, KC_MINS)
 
 #define L3_ESC   LT(L_FN, KC_ESC)
 #define L3_INS   LT(L_FN, KC_INS)
@@ -122,17 +93,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [L_BASE] = LAYOUT(
             L3_ESC , KC_1, KC_2, KC_3, KC_4, KC_5   ,                     KC_6   , KC_7, KC_8   , KC_9  , KC_0   , KC_BSPC,
             KC_TAB , KC_Q, KC_W, KC_B, KC_F, US_DIAE,                     KC_Z   , KC_K, KC_U   , KC_O  , KC_P   , KC_SLSH,
-            KL_SHFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KL_SHFT,
-            KC_LCTL, L2_Y, L2_X, KC_C, KC_V, MX_QUOT, KC_LGUI,   MC_WINT, KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, L3_INS,
+            KC_LSFT, KC_A, KC_S, KC_D, KC_R, KC_G   ,                     KC_H   , KC_N, KC_I   , KC_L  , KC_T   , KC_RSFT,
+            KC_LCTL, L2_Y, KC_X, KC_C, KC_V, MX_QUOT, KC_LGUI,   MC_WINT, KC_J   , KC_M, KC_COMM, KC_DOT, L2_MINS, L3_INS,
                                              KC_LALT, L2_DEL ,   KC_SPC , L2_ENT , KC_E, KC_RCTL
-        ),
-    // slightly modified shift layer
-    [L_SHIFT] = LAYOUT(
-              L3_ESC  , S(KC_1), S(KC_2), S(KC_3), S(KC_4), S(KC_5   ),                          KC_PLUS , S(KC_7), S(KC_8), KC_EQL , KC_QUES, S(KC_BSPC),
-            S(KC_TAB ), S(KC_Q), S(KC_W), S(KC_B), S(KC_F),   US_DCIR ,                        S(KC_Z   ), S(KC_K), S(KC_U), S(KC_O), S(KC_P),   US_SS   ,
-              KC_LSFT , S(KC_A), S(KC_S), S(KC_D), S(KC_R), S(KC_G   ),                        S(KC_H   ), S(KC_N), S(KC_I), S(KC_L), S(KC_T),   KC_RSFT ,
-              KC_LCTL , S(KC_Y), S(KC_X), S(KC_C), S(KC_V),   MX_DQUO , S(KC_LGUI),   KC_RGUI, S(KC_J   ), S(KC_M), KC_SCLN, KC_COLN, KC_UNDS, S(KC_INS) ,
-                                                S(KC_LALT), S(KC_DEL ), S(KC_SPC ), S(KC_ENT), S(KC_E   ), S(KC_RCTL)
         ),
     // alternate character and navigation layer
     // we have US_TILD here, which is the 'live' key for programmers.
@@ -155,6 +118,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         )
 };
 
+const custom_shift_key_t custom_shift_keys[] = {
+  {KC_9   , KC_EQL }, // Shift 9 is =
+  {KC_0   , KC_QUES}, // Shift 0 is ?
+  {KC_SLSH, US_SS  }, // Shift / is ß
+  {KC_DOT , KC_COLN}, // Shift . is :
+  {KC_COMM, KC_SCLN}, // Shift , is ;
+  {US_DIAE, US_DCIR}, // Shift ¨ is ^
+};
 
 // 3 ms still had some dropped letters.
 const int SEND_STRING_DELAY_MS = 10;
@@ -235,7 +206,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         case MX_VERS:
             if (record->event.pressed) {
-                send_string_with_delay("Layout ASDR_NILT standalone, rev13-alpha-unicode-experiment, ", SEND_STRING_DELAY_MS);
+                send_string_with_delay("Layout ASDR_NILT standalone, rev14-custom-shift-hack-instead-of-layer, ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(__DATE__, SEND_STRING_DELAY_MS);
                 send_string_with_delay("\nQuote mode: ", SEND_STRING_DELAY_MS);
                 send_string_with_delay(quote_mode_names[current_quote_mode], SEND_STRING_DELAY_MS);
@@ -255,7 +226,3 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // all other cases to be handled by QMK.
     return true;
 };
-
-#ifdef OTHER_KEYMAP_C
-#    include OTHER_KEYMAP_C
-#endif // OTHER_KEYMAP_C
