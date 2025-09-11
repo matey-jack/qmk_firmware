@@ -122,8 +122,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ),
     // Current accents: äöü ß é çñ. Current extras: £. We might move some characters from the AltGr layer here.
     // Especially the software combining accents from US ext. intl. ...
+    // Note the Pound sign is on the pound key instead of Dollar, to avoid the finger conflict with the layer toggle. The pun, thus, is accidental. :-)
     [L_COMBINE] = LAYOUT(
-            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, US_PND , KC_TRNS,                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+            KC_TRNS, KC_TRNS, KC_TRNS, US_PND , KC_TRNS, KC_TRNS,                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MX_FUER, KC_TRNS,                     US_SS  , KC_TRNS, US_UDIA, US_ODIA, KC_TRNS, KC_TRNS,
             KC_TRNS, US_ADIA, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                     KC_TRNS, US_NTIL, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
             KC_TRNS, KC_TRNS, KC_TRNS, US_CCED, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
