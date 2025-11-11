@@ -583,7 +583,7 @@ uint8_t rgb_matrix_get_mode(void) {
 
 void rgb_matrix_step_helper(bool write_to_eeprom) {
     uint8_t mode = rgb_matrix_config.mode + 1;
-    rgb_matrix_mode_eeprom_helper((mode < RGB_MATRIX_EFFECT_MAX) ? mode : 1, write_to_eeprom);
+    rgb_matrix_mode_eeprom_helper((mode < RGB_MATRIX_EFFECT_MAX) ? mode : 0, write_to_eeprom);
 }
 void rgb_matrix_step_noeeprom(void) {
     rgb_matrix_step_helper(false);
