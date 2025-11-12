@@ -69,7 +69,7 @@ enum KEY_COLOR_TYPE {
     KEY_COLOR_MEDIA_CONTROL,
 
     // any combination of modifiers with any key (except the "modified character" keys above).
-    KEY_COLOR_MODIFIED_USB_KEY,
+    KEY_COLOR_MODIFIED_KEY,
 
     // everything else sent to the host via USB.
     KEY_COLOR_USB_OTHER,
@@ -183,12 +183,12 @@ enum KEY_COLOR_TYPE get_shifted_key_type(uint8_t keycode) {
         case KEY_COLOR_SYMBOL:
             return KEY_COLOR_MODIFIED_CHARACTER;
         default:
-            return KEY_COLOR_MODIFIED_USB_KEY;
+            return KEY_COLOR_MODIFIED_KEY;
     }
 }
 
 enum KEY_COLOR_TYPE get_type(uint16_t keycode) {
-    // handle this before "basic", because the QMK macro mistakingly includes those.
+    // handle this before "basic", because the next condition mistakingly includes those.
     if (keycode <= KC_TRANSPARENT) {
         return KEY_COLOR_UNMAPPED;
     }
@@ -197,10 +197,10 @@ enum KEY_COLOR_TYPE get_type(uint16_t keycode) {
     }
     if (IS_QK_MODS(keycode)) {
         if (HAS_CTRL_OR_GUI_MOD(keycode)) {
-            return KEY_COLOR_MODIFIED_USB_KEY;
+            return KEY_COLOR_MODIFIED_KEY;
         }
         if (HAS_ALT_MOD(keycode) && !HAS_RIGHT_ALT_MOD(keycode)) {
-            return KEY_COLOR_MODIFIED_USB_KEY;
+            return KEY_COLOR_MODIFIED_KEY;
         }
         // By exclusion, the modifier must be Shift or AltGr or both.
         return get_shifted_key_type(keycode & 0xFF);
