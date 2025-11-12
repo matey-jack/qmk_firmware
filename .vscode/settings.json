@@ -25,7 +25,10 @@
         "utility": "c",
         "ranges": "c",
         "compare": "c",
-        "cstdint": "c"
+        "cstdint": "c",
+        "future": "c",
+        "system_error": "c",
+        "regex": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,
