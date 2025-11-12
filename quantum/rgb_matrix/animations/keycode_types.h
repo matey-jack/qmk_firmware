@@ -1,3 +1,6 @@
+// Copyright 2025 QMK
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include "keycodes.h"
 #include "modifiers.h"
 
@@ -92,10 +95,10 @@ enum KEY_COLOR_TYPE {
 };
 
 // Note that checking for a right modifier excludes the left one, but checking for the left one, includes both left and right.
-#define HAS_RIGHT_ALT_MOD(keycode) (((keycode) >> 8) & MOD_RALT != 0)
-#define HAS_SHIFT_MOD(keycode) (((keycode) >> 8) & MOD_LSFT != 0)
-#define HAS_CTRL_OR_GUI_MOD(keycode) ((((keycode) >> 8) & (MOD_LCTL | MOD_LGUI)) != 0)
-#define HAS_LEFT_ALT_MOD(keycode) (((keycode) >> 8) & 0x10 == 0) || (((keycode) >> 8) & MOD_LALT != 0)
+#define HAS_SHIFT_MOD(keycode) (((((keycode) >> 8) & MOD_LSFT) == MOD_LSFT))
+#define HAS_ALT_MOD(keycode) (((((keycode) >> 8) & MOD_LALT) == MOD_LALT))
+#define HAS_RIGHT_ALT_MOD(keycode) (((((keycode) >> 8) & MOD_RALT) == MOD_RALT))
+#define HAS_CTRL_OR_GUI_MOD(keycode) (((((keycode) >> 8) & (MOD_LCTL | MOD_LGUI)) != 0))
 
 // The national keymap on the host OS can change which keycode maps to which character, but it won't mix non-characters with characters.
 // So this function should be generically correct at least for all the Latin-, Greek-, and Cyrillic-based keymaps.
@@ -128,6 +131,7 @@ enum KEY_COLOR_TYPE classify_unmodified_character(uint8_t keycode) {
         case KC_SLASH:
             return KEY_COLOR_PUNCTUATION;
         default:
+            // this includes KC_GRAVE, since it's not a dead key in US ANSI.
             return KEY_COLOR_SYMBOL;
     }
 }
@@ -154,8 +158,14 @@ enum KEY_COLOR_TYPE classify_basic_keycode(uint8_t keycode) {
             case KC_PGDN:
                 return KEY_COLOR_NAVIGATION;
 
+            // F13 upwards don't exist in the ANSI standard and have a different keycode range.
             case KC_F1 ... KC_F12:
                 return KEY_COLOR_FUNCTION;
+
+            // TODO: validate which ones QMK actually uses.
+            case KC_KB_MUTE ... KC_KB_VOLUME_DOWN:
+            case KC_AUDIO_MUTE ... KC_MEDIA_REWIND:
+                return KEY_COLOR_MEDIA_CONTROL;
 
             default:
                 return KEY_COLOR_USB_OTHER;
@@ -186,25 +196,28 @@ enum KEY_COLOR_TYPE get_type(uint16_t keycode) {
         return classify_basic_keycode(keycode & 0xFF);
     }
     if (IS_QK_MODS(keycode)) {
-        if (HAS_CTRL_OR_GUI_MOD(keycode) || HAS_LEFT_ALT_MOD(keycode)) {
+        if (HAS_CTRL_OR_GUI_MOD(keycode)) {
             return KEY_COLOR_MODIFIED_USB_KEY;
         }
-        if (HAS_SHIFT_MOD(keycode) || HAS_RIGHT_ALT_MOD(keycode)) {
+        if (HAS_ALT_MOD(keycode) && !HAS_RIGHT_ALT_MOD(keycode)) {
             return KEY_COLOR_MODIFIED_USB_KEY;
         }
-        // by exclusion, the modifier must be Shift or AltGr or both.
+        // By exclusion, the modifier must be Shift or AltGr or both.
         return get_shifted_key_type(keycode & 0xFF);
+    }
+
+    switch (keycode) {
+        // This is numerically in the middle of the layer toggle keycodes, so we need to check it first.
+        // Classification as an actual modifier key is technically wrong, since it doesn't send anything to the host,
+        // but for lighting purposes it should have the color of a modifier.
+        case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:
+        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
+            return KEY_COLOR_MODIFIER;
     }
 
     switch (keycode) {
         case QUANTUM_KEYCODE_RANGE:
             return KEY_COLOR_QMK_CONTROL;
-
-        // this is numerically in the middle of the layer toggle keycodes, so we need to check it first.
-        case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:
-        case QK_MOD_TAP ... QK_MOD_TAP_MAX:
-            // this is technically wrong, since it doesn't send anything to the host, but for lighting purposes it should have the color of a modifier.
-            return KEY_COLOR_MODIFIER;
 
         case QK_LAYER_TAP ... QK_PERSISTENT_DEF_LAYER_MAX:
             return KEY_COLOR_LAYER_TOGGLE;
